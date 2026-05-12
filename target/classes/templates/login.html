@@ -3,74 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Red Team VulnDB - Operator Login Portal">
-    <title>RedTeam VulnDB :: Login</title>
+    <title>RedTeam VulnDB :: Giriş</title>
     <link rel="stylesheet" th:href="@{/css/terminal.css}">
 </head>
 <body>
-
-    <div class="login-container">
-        <!-- Terminal başlık çubuğu -->
-        <div class="terminal-header">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-title">root@vulndb:~/auth</span>
-        </div>
-
-        <div class="terminal-body">
-            <!-- ASCII Art Banner -->
-            <pre class="ascii-banner">
- ██▀███  ▓█████ ▓█████▄    ▄▄▄█████▓▓█████ ▄▄▄       ███▄ ▄███▓
-▓██ ▒ ██▒▓█   ▀ ▒██▀ ██▌   ▓  ██▒ ▓▒▓█   ▀▒████▄    ▓██▒▀█▀ ██▒
-▓██ ░▄█ ▒▒███   ░██   █▌   ▒ ▓██░ ▒░▒███  ▒██  ▀█▄  ▓██    ▓██░
-▒██▀▀█▄  ▒▓█  ▄ ░▓█▄   ▌   ░ ▓██▓ ░ ▒▓█  ▄░██▄▄▄▄██ ▒██    ▒██ 
-░██▓ ▒██▒░▒████▒░▒████▓      ▒██▒ ░ ░▒████▒▓█   ▓██▒▒██▒   ░██▒
-░ ▒▓ ░▒▓░░░ ▒░ ░ ▒▒▓  ▒      ▒ ░░   ░░ ▒░ ░▒▒   ▓▒█░░ ▒░   ░  ░
-            </pre>
-            <p class="system-label">[VULNERABILITY DATABASE v1.0]</p>
-
-            <!-- Hata mesajı (yanlış giriş) -->
-            <div th:if="${param.error}" class="alert alert-danger">
-                <span class="blink">▶</span> ACCESS DENIED :: Geçersiz kullanıcı adı veya şifre.
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>🛡️ RedTeam VulnDB</h1>
+                <p>Vulnerability Management Portal</p>
             </div>
 
-            <!-- Logout mesajı -->
-            <div th:if="${param.logout}" class="alert alert-success">
-                <span class="blink">▶</span> SESSION TERMINATED :: Başarıyla çıkış yapıldı.
+            <div class="login-body">
+                <!-- Hata mesajı -->
+                <div th:if="${param.error}" class="alert alert-danger">
+                    ⚠ Geçersiz kullanıcı adı veya şifre.
+                </div>
+
+                <!-- Logout mesajı -->
+                <div th:if="${param.logout}" class="alert alert-success">
+                    ✓ Başarıyla çıkış yapıldı.
+                </div>
+
+                <!-- Login Formu -->
+                <form th:action="@{/login}" method="post">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Kullanıcı Adı</label>
+                        <input type="text" id="username" name="username"
+                               class="form-input" placeholder="Kullanıcı adınızı girin"
+                               required autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Şifre</label>
+                        <input type="password" id="password" name="password"
+                               class="form-input" placeholder="Şifrenizi girin"
+                               required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:12px;">
+                        Giriş Yap
+                    </button>
+                </form>
             </div>
 
-            <!-- Login Formu -->
-            <form th:action="@{/login}" method="post" class="login-form">
-                <div class="input-group">
-                    <label for="username" class="terminal-label">operator@vulndb:~$ username:</label>
-                    <input type="text"
-                           id="username"
-                           name="username"
-                           class="terminal-input"
-                           placeholder="Enter username..."
-                           required
-                           autofocus>
-                </div>
-
-                <div class="input-group">
-                    <label for="password" class="terminal-label">operator@vulndb:~$ password:</label>
-                    <input type="password"
-                           id="password"
-                           name="password"
-                           class="terminal-input"
-                           placeholder="Enter password..."
-                           required>
-                </div>
-
-                <button type="submit" class="btn btn-primary">
-                    [AUTHENTICATE] <span class="blink">_</span>
-                </button>
-            </form>
-
-            <p class="footer-text">// Yetkisiz erişim girişimleri loglanmaktadır.</p>
+            <div class="login-footer">
+                Yetkisiz erişim girişimleri kayıt altına alınmaktadır.
+            </div>
         </div>
     </div>
-
+    <script th:src="@{/js/app.js}"></script>
 </body>
 </html>
