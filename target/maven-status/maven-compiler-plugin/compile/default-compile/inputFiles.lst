@@ -1,0 +1,13 @@
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/service/OperatorDetailsService.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/repository/VulnerabilityRepository.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/config/DataInitializer.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/controller/ImageController.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/VulnDbApplication.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/service/VulnerabilityService.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/entity/Operator.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/config/SecurityConfig.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/entity/Severity.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/controller/VulnerabilityController.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/entity/Vulnerability.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/controller/AuthController.java
+/home/godfry/Desktop/web_proje/proje1/src/main/java/com/redteam/vulndb/repository/OperatorRepository.java

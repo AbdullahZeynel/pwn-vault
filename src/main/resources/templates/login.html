@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedTeam VulnDB :: Giriş</title>
+    <link rel="stylesheet" th:href="@{/css/terminal.css}">
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>🛡️ RedTeam VulnDB</h1>
+                <p>Vulnerability Management Portal</p>
+            </div>
+
+            <div class="login-body">
+                <!-- Hata mesajı -->
+                <div th:if="${param.error}" class="alert alert-danger">
+                    ⚠ Geçersiz kullanıcı adı veya şifre.
+                </div>
+
+                <!-- Logout mesajı -->
+                <div th:if="${param.logout}" class="alert alert-success">
+                    ✓ Başarıyla çıkış yapıldı.
+                </div>
+
+                <!-- Login Formu -->
+                <form th:action="@{/login}" method="post">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Kullanıcı Adı</label>
+                        <input type="text" id="username" name="username"
+                               class="form-input" placeholder="Kullanıcı adınızı girin"
+                               required autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Şifre</label>
+                        <input type="password" id="password" name="password"
+                               class="form-input" placeholder="Şifrenizi girin"
+                               required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:12px;">
+                        Giriş Yap
+                    </button>
+                </form>
+            </div>
+
+            <div class="login-footer">
+                Yetkisiz erişim girişimleri kayıt altına alınmaktadır.
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

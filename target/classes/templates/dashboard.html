@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Red Team VulnDB - Vulnerability Dashboard">
+    <title>RedTeam VulnDB :: Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/terminal.css}">
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- Üst Navigasyon -->
+        <nav class="terminal-nav">
+            <div class="nav-left">
+                <span class="nav-brand">[ RedTeam VulnDB ]</span>
+            </div>
+            <div class="nav-right">
+                <span class="nav-user" sec:authentication="name">operator</span>
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <button type="submit" class="btn btn-logout">[LOGOUT]</button>
+                </form>
+            </div>
+        </nav>
+
+        <!-- Terminal Başlık -->
+        <div class="terminal-header page-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">root@vulndb:~/dashboard</span>
+        </div>
+
+        <div class="terminal-body dashboard-body">
+            <!-- Başarı Mesajı -->
+            <div th:if="${successMessage}" class="alert alert-success">
+                <span>▶</span> <span th:text="${successMessage}"></span>
+            </div>
+
+            <!-- Hata Mesajı -->
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span>▶</span> <span th:text="${errorMessage}"></span>
+            </div>
+
+            <!-- Arama + Yeni Ekle Bölümü -->
+            <div class="action-bar">
+                <form th:action="@{/dashboard}" method="get" class="search-form">
+                    <div class="search-group">
+                        <label for="search" class="terminal-label">grep target_system:</label>
+                        <input type="text"
+                               id="search"
+                               name="search"
+                               class="terminal-input search-input"
+                               placeholder="Hedef sistem ara..."
+                               th:value="${searchKeyword}">
+                        <button type="submit" class="btn btn-search">[SEARCH]</button>
+                        <a th:href="@{/dashboard}" class="btn btn-reset">[RESET]</a>
+                    </div>
+                </form>
+
+                <a th:href="@{/vulnerability/new}" class="btn btn-primary btn-new">
+                    [+ NEW VULN]
+                </a>
+            </div>
+
+            <!-- Arama sonucu bilgisi -->
+            <p th:if="${searchKeyword}" class="search-info">
+                <span class="text-green">▶ grep results for "</span>
+                <span class="text-highlight" th:text="${searchKeyword}"></span>
+                <span class="text-green">" :: </span>
+                <span th:text="${vulnerabilities.size()}"></span>
+                <span class="text-green"> kayıt bulundu</span>
+            </p>
+
+            <!-- Vulnerability Tablosu -->
+            <div class="table-container">
+                <table class="terminal-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>TITLE</th>
+                            <th>TARGET SYSTEM</th>
+                            <th>SEVERITY</th>
+                            <th>CREATED</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Kayıt yoksa -->
+                        <tr th:if="${#lists.isEmpty(vulnerabilities)}">
+                            <td colspan="6" class="empty-message">
+                                // Kayıt bulunamadı. Yeni vulnerability ekleyin.
+                            </td>
+                        </tr>
+                        <!-- Kayıtları listele -->
+                        <tr th:each="vuln : ${vulnerabilities}">
+                            <td th:text="${vuln.id}"></td>
+                            <td th:text="${vuln.title}"></td>
+                            <td th:text="${vuln.targetSystem}"></td>
+                            <td>
+                                <span class="severity-badge"
+                                      th:classappend="${vuln.severity.name()}"
+                                      th:text="${vuln.severity}">
+                                </span>
+                            </td>
+                            <td th:text="${vuln.createdAt != null ? #temporals.format(vuln.createdAt, 'dd.MM.yyyy HH:mm') : '-'}"></td>
+                            <td class="action-cell">
+                                <a th:href="@{'/vulnerability/' + ${vuln.id}}"
+                                   class="btn btn-sm btn-detail">[VIEW]</a>
+                                <a th:href="@{'/vulnerability/' + ${vuln.id} + '/edit'}"
+                                   class="btn btn-sm btn-edit">[EDIT]</a>
+                                <form th:action="@{'/vulnerability/' + ${vuln.id} + '/delete'}"
+                                      method="post"
+                                      class="inline-form"
+                                      onsubmit="return confirmDelete(this)">
+                                    <button type="submit"
+                                            class="btn btn-sm btn-delete">[DEL]</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Toplam kayıt bilgisi -->
+            <p class="record-count">
+                // Total records: <span th:text="${vulnerabilities.size()}">0</span>
+            </p>
+        </div>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>
