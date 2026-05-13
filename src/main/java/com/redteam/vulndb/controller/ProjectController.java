@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * ProjectController — Pentest projeleri yönetimi.
- * Ana sayfa artık proje listesi (GET /projects).
+ * Controller for managing pentest projects.
  */
 @Controller
 public class ProjectController {
@@ -23,7 +22,6 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    /** Proje listesi — Ana sayfa */
     @GetMapping("/projects")
     public String listProjects(Model model) {
         model.addAttribute("projects", projectService.findAll());
@@ -32,7 +30,6 @@ public class ProjectController {
         return "projects";
     }
 
-    /** Yeni proje oluştur */
     @PostMapping("/projects/save")
     public String saveProject(@Valid @ModelAttribute("newProject") Project project,
                               BindingResult result,
@@ -47,7 +44,6 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
-    /** Proje sil (tüm vulnerability'leri ile birlikte) */
     @PostMapping("/projects/{id}/delete")
     public String deleteProject(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         projectService.deleteById(id);
