@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedTeam VulnDB :: Projeler</title>
+    <link rel="stylesheet" th:href="@{/css/terminal.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <a th:href="@{/projects}" class="nav-brand">
+            <span class="nav-brand-icon">🛡️</span> RedTeam VulnDB
+        </a>
+        <div class="nav-right">
+            <span class="nav-user" sec:authentication="name">operator</span>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Tema Değiştir">🌙</button>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-nav">Çıkış</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Pentest Projeleri</h1>
+                <p class="page-subtitle">Penetrasyon testi projelerini yönetin</p>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div th:if="${successMessage}" class="alert alert-success">
+            ✓ <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger">
+            ⚠ <span th:text="${errorMessage}"></span>
+        </div>
+
+        <!-- Project Cards Grid -->
+        <div class="project-grid">
+            <th:block th:each="project : ${projects}">
+                <div class="project-card">
+                    <div class="project-card-header">
+                        <span class="project-status-badge"
+                              th:classappend="'status-' + ${project.status.name()}"
+                              th:text="${project.status}"></span>
+                        <form th:action="@{'/projects/' + ${project.id} + '/delete'}"
+                              method="post" class="inline-form"
+                              onsubmit="event.stopPropagation(); return confirm('Bu proje ve tüm vulnerability kayıtları silinecek. Devam?')">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="event.stopPropagation();">✕</button>
+                        </form>
+                    </div>
+                    <a th:href="@{'/projects/' + ${project.id} + '/dashboard'}" class="project-card-body">
+                        <h3 class="project-name" th:text="${project.name}">Proje Adı</h3>
+                        <p class="project-desc" th:text="${project.description ?: 'Açıklama yok'}"></p>
+                        <div class="project-meta">
+                            <span class="project-vuln-count"
+                                  th:text="${project.vulnerabilities.size()} + ' vulnerability'"></span>
+                            <span class="project-date"
+                                  th:text="${project.createdAt != null ? #temporals.format(project.createdAt, 'dd.MM.yyyy') : ''}"></span>
+                        </div>
+                    </a>
+                </div>
+            </th:block>
+
+            <!-- New Project Card -->
+            <div class="project-card project-card-new">
+                <form th:action="@{/projects/save}" method="post" th:object="${newProject}">
+                    <h3 style="margin-bottom:16px; color:var(--text);">Yeni Proje Oluştur</h3>
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-input"
+                               placeholder="Proje adı *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="description" class="form-input"
+                               placeholder="Açıklama (opsiyonel)">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                        + Proje Oluştur
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

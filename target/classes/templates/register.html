@@ -3,61 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RedTeam VulnDB :: Giriş</title>
+    <title>RedTeam VulnDB :: Hesap Oluştur</title>
     <link rel="stylesheet" th:href="@{/css/terminal.css}">
 </head>
 <body>
     <div class="login-wrapper">
         <div class="login-card">
             <div class="login-header">
-                <h1>🛡️ RedTeam VulnDB</h1>
-                <p>Vulnerability Management Portal</p>
+                <h1>🛡️ Hesap Oluştur</h1>
+                <p>Yeni Operator Kaydı</p>
             </div>
 
             <div class="login-body">
                 <!-- Hata mesajı -->
-                <div th:if="${param.error}" class="alert alert-danger">
-                    ⚠ Geçersiz kullanıcı adı veya şifre.
+                <div th:if="${error}" class="alert alert-danger" th:text="${error}">
                 </div>
 
-                <!-- Logout mesajı -->
-                <div th:if="${param.logout}" class="alert alert-success">
-                    ✓ Başarıyla çıkış yapıldı.
-                </div>
-
-                <!-- Registration success mesajı -->
-                <div th:if="${param.registered}" class="alert alert-success">
-                    ✓ Hesap başarıyla oluşturuldu. Giriş yapabilirsiniz.
-                </div>
-
-                <!-- Login Formu -->
-                <form th:action="@{/login}" method="post">
+                <!-- Register Formu -->
+                <form th:action="@{/register}" method="post">
                     <div class="form-group">
                         <label for="username" class="form-label">Kullanıcı Adı</label>
                         <input type="text" id="username" name="username"
-                               class="form-input" placeholder="Kullanıcı adınızı girin"
+                               class="form-input" placeholder="Kullanıcı adınızı belirleyin"
                                required autofocus>
                     </div>
 
                     <div class="form-group">
                         <label for="password" class="form-label">Şifre</label>
                         <input type="password" id="password" name="password"
-                               class="form-input" placeholder="Şifrenizi girin"
+                               class="form-input" placeholder="Şifrenizi belirleyin"
                                required>
                     </div>
 
                     <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:12px;">
-                        Giriş Yap
+                        Kayıt Ol
                     </button>
                     
                     <div style="margin-top: 15px; text-align: center;">
-                        <a th:href="@{/register}" style="color: #4CAF50; text-decoration: none;">Hesabın yok mu? Kayıt Ol</a>
+                        <a th:href="@{/login}" style="color: #4CAF50; text-decoration: none;">Zaten hesabın var mı? Giriş Yap</a>
                     </div>
                 </form>
             </div>
 
             <div class="login-footer">
-                Yetkisiz erişim girişimleri kayıt altına alınmaktadır.
+                Tüm operatör hareketleri loglanmaktadır.
             </div>
         </div>
     </div>

@@ -4,15 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RedTeam VulnDB :: Dashboard</title>
+    <title th:text="'RedTeam VulnDB :: ' + ${project.name}">Dashboard</title>
     <link rel="stylesheet" th:href="@{/css/terminal.css}">
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar">
-        <a th:href="@{/dashboard}" class="nav-brand">
-            <span class="nav-brand-icon">🛡️</span>
-            RedTeam VulnDB
+        <a th:href="@{/projects}" class="nav-brand">
+            <span class="nav-brand-icon">🛡️</span> RedTeam VulnDB
         </a>
         <div class="nav-right">
             <span class="nav-user" sec:authentication="name">operator</span>
@@ -24,13 +22,19 @@
     </nav>
 
     <div class="main-container">
-        <!-- Page Header -->
+        <!-- Breadcrumb -->
+        <div style="margin-bottom:8px;">
+            <a th:href="@{/projects}" class="breadcrumb-link">Projeler</a>
+            <span style="color:var(--text-muted);margin:0 6px;">›</span>
+            <span style="color:var(--text-secondary)" th:text="${project.name}">Proje</span>
+        </div>
+
         <div class="page-header">
             <div>
-                <h1 class="page-title">Vulnerability Dashboard</h1>
-                <p class="page-subtitle">Keşfedilen güvenlik açıklarını yönetin</p>
+                <h1 class="page-title" th:text="${project.name}">Dashboard</h1>
+                <p class="page-subtitle" th:text="${project.description ?: 'Vulnerability kayıtlarını yönetin'}"></p>
             </div>
-            <a th:href="@{/vulnerability/new}" class="btn btn-primary">+ Yeni Kayıt</a>
+            <a th:href="@{'/projects/' + ${project.id} + '/vulnerability/new'}" class="btn btn-primary">+ Yeni Kayıt</a>
         </div>
 
         <!-- Alerts -->
@@ -41,19 +45,18 @@
             ⚠ <span th:text="${errorMessage}"></span>
         </div>
 
-        <!-- Search Bar -->
+        <!-- Search -->
         <div class="action-bar">
-            <form th:action="@{/dashboard}" method="get" class="search-form">
+            <form th:action="@{'/projects/' + ${project.id} + '/dashboard'}" method="get" class="search-form">
                 <div class="search-group">
                     <input type="text" name="search" class="form-input search-input"
-                           placeholder="Hedef sistem ara..." th:value="${searchKeyword}">
+                           placeholder="Başlık veya hedef sistem ara..." th:value="${searchKeyword}">
                     <button type="submit" class="btn btn-primary">Ara</button>
-                    <a th:href="@{/dashboard}" class="btn btn-ghost">Sıfırla</a>
+                    <a th:href="@{'/projects/' + ${project.id} + '/dashboard'}" class="btn btn-ghost">Sıfırla</a>
                 </div>
             </form>
         </div>
 
-        <!-- Search Info -->
         <div th:if="${searchKeyword}" class="search-info">
             "<strong th:text="${searchKeyword}"></strong>" için
             <strong th:text="${vulnerabilities.size()}"></strong> sonuç bulundu.
@@ -81,8 +84,7 @@
                         <td><strong th:text="${vuln.title}"></strong></td>
                         <td th:text="${vuln.targetSystem}"></td>
                         <td>
-                            <span class="badge"
-                                  th:classappend="'badge-' + ${vuln.severity.name()}"
+                            <span class="badge" th:classappend="'badge-' + ${vuln.severity.name()}"
                                   th:text="${vuln.severity}"></span>
                         </td>
                         <td th:text="${vuln.createdAt != null ? #temporals.format(vuln.createdAt, 'dd.MM.yyyy HH:mm') : '-'}"></td>
@@ -90,7 +92,8 @@
                             <a th:href="@{'/vulnerability/' + ${vuln.id}}" class="btn btn-sm btn-outline">Detay</a>
                             <a th:href="@{'/vulnerability/' + ${vuln.id} + '/edit'}" class="btn btn-sm btn-ghost">Düzenle</a>
                             <form th:action="@{'/vulnerability/' + ${vuln.id} + '/delete'}"
-                                  method="post" class="inline-form" onsubmit="return confirmDelete(this)">
+                                  method="post" class="inline-form" onsubmit="return confirm('Bu kaydı silmek istediğinize emin misiniz?')">
+                                <input type="hidden" name="projectId" th:value="${project.id}">
                                 <button type="submit" class="btn btn-sm btn-danger">Sil</button>
                             </form>
                         </td>

@@ -104,7 +104,7 @@ public class SecurityConfig {
             // URL bazlı erişim kuralları
             .authorizeHttpRequests(auth -> auth
                 // Bu URL'ler herkese açık (login olmadan erişilebilir)
-                .requestMatchers("/login", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
                 // Geri kalan TÜM URL'ler authentication gerektirir
                 .anyRequest().authenticated()
             )
@@ -112,7 +112,7 @@ public class SecurityConfig {
             // Form tabanlı login konfigürasyonu
             .formLogin(form -> form
                 .loginPage("/login")                    // Özel login sayfası URL'si
-                .defaultSuccessUrl("/dashboard", true)  // Başarılı giriş → dashboard
+                .defaultSuccessUrl("/projects", true)  // Başarılı giriş → proje listesi
                 .failureUrl("/login?error=true")        // Başarısız giriş → hata mesajı
                 .permitAll()
             )

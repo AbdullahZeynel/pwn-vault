@@ -25,6 +25,11 @@
                     ✓ Başarıyla çıkış yapıldı.
                 </div>
 
+                <!-- Registration success mesajı -->
+                <div th:if="${param.registered}" class="alert alert-success">
+                    ✓ Hesap başarıyla oluşturuldu. Giriş yapabilirsiniz.
+                </div>
+
                 <!-- Login Formu -->
                 <form th:action="@{/login}" method="post">
                     <div class="form-group">
@@ -44,6 +49,10 @@
                     <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:12px;">
                         Giriş Yap
                     </button>
+                    
+                    <div style="margin-top: 15px; text-align: center;">
+                        <a th:href="@{/register}" style="color: #4CAF50; text-decoration: none;">Hesabın yok mu? Kayıt Ol</a>
+                    </div>
                 </form>
             </div>
 
